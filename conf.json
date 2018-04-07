@@ -1,0 +1,8 @@
+{
+    "algorithm" : ["illinois"],
+    "bandwidth" : [100],
+    "delay" : [5],
+    "jitter" : [20],
+    "loss" : [1]
+}
+
