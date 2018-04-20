@@ -1,8 +1,7 @@
 {
-    "algorithm" : ["illinois"],
-    "bandwidth" : [100],
-    "delay" : [5],
-    "jitter" : [20],
-    "loss" : [1]
+    "algorithm" : ["tcp_cubic", "illinois", "vegas", "bbr"],
+    "bandwidth" : [1, 10, 100, 1000],
+    "delay" : [1, 5, 10, 25, 50, 100],
+    "jitter" : [0, 10, 20],
+    "loss" : [0.00001, 0.0001, 0.001, 0.01, 0.1, 1]
 }
-
