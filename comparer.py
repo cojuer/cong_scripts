@@ -38,6 +38,7 @@ if __name__ == "__main__":
         for line in in_b:
             if len(line) == 0: 
                 break
+            # FIXME: second line overrides first
             a, b, c, d, e, *f = line
             a, b, c, d, e, *f = line.split(' ')
             b_data[(float(a), float(b), float(c), float(d))] = float(e)

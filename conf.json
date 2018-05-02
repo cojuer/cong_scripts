@@ -1,5 +1,5 @@
 {
-    "algorithm" : ["tcp_cubic", "illinois", "vegas", "bbr"],
+    "algorithm" : ["illinois", "vegas", "reno"],
     "bandwidth" : [1, 10, 100, 1000],
     "delay" : [1, 5, 10, 25, 50, 100],
     "jitter" : [0, 10, 20],
