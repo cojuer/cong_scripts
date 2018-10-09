@@ -21,3 +21,25 @@ def parse_view(file_path: str) -> (float, int):
         loss_num = int(content[2].split(':')[1])
         rtt = int(content[3].split(':')[1])
     return (1.0 * loss_num / acks_num, rtt)
+
+
+def parse_res(file_path: str) -> dict():
+    res = dict()
+    with open(file_path, 'r') as fp:
+        for line in fp:
+            if len(line) == 0: 
+                break
+            a, b, c, d, e, f = line[:-1].split(' ')
+            res[(float(a), float(b), float(c), float(d))] = f
+    return res
+
+
+def parse_res_per_alg(file_path: str) -> dict():
+    res = dict()
+    with open(file_path, 'r') as fp:
+        for line in fp:
+            if len(line) == 0: 
+                break
+            a, b, c, d, e = line[:-1].split(' ')
+            res[(float(a), float(b), float(c), float(d))] = e
+    return res
