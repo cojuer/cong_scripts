@@ -35,6 +35,9 @@ class Quality:
     def __hash__(self):
         return hash(str(self))
 
+    def __lt__(self, rhs):
+        return self.to_tuple() < rhs.to_tuple()
+
     def __eq__(self, rhs):
         return (self.bandwidth, self.delay, self.jitter, self.loss) == \
             (rhs.bandwidth, rhs.delay, rhs.jitter, rhs.loss)
@@ -112,9 +115,9 @@ def parse_res_per_alg(file_path: str) -> dict:
             res[quality] = float(speed)
     return res
 
-def get_srv_out_name(alg: str, tc_quality: TcQuality, attempt: int) -> str:
-    assert isinstance(tc_quality, TcQuality)
-    bw, delay, jitter, loss = tc_quality.to_tuple()
+def get_srv_out_name(alg: str, quality: Quality, attempt: int) -> str:
+    assert isinstance(quality, Quality)
+    bw, delay, jitter, loss = quality.to_tc_quality().to_tuple()
     loss = int(loss) if loss == 1 else loss
     return 'net_{}_{}_{}_{}_{}_{}_server.json'\
         .format(alg, bw, delay, jitter, loss, attempt)

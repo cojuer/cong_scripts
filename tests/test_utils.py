@@ -61,7 +61,6 @@ def test_parse_res_per_alg():
         ('cubic', Quality(1, 1, 0, 0.001), 2, 'net_cubic_0.125_1_0.0_0.001_2_server.json'),
     ])
 def test_srv_out_name(alg, quality, attempt, expected):
-    tc_q = quality.to_tc_quality()
-    name = get_srv_out_name(alg, tc_q, attempt)
+    name = get_srv_out_name(alg, quality, attempt)
     assert name == expected
 
