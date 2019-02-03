@@ -1,4 +1,11 @@
+# IDE specific folders
+.idea
+# Data folders
 Data
-*.log
+data/
 models/
 results/
+# Log folders
+*.log
+# pycache
+__pycache__
