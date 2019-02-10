@@ -76,14 +76,16 @@ if __name__ == "__main__":
             attempt_speed = parse_server_out(filepath)
             speed_lst.append(attempt_speed)
 
-            # calculate variance
-            variance = np.std(speed_lst) / np.mean(speed_lst)
-            logging.info('speed: {}'.format(attempt_speed))
-            logging.info('variance: {}'.format(variance))
+            # allow stop if variance is low
+            if attempt_num >= 5:
+                # calculate variance
+                variance = np.std(speed_lst) / np.mean(speed_lst)
+                logging.info('speed: {}'.format(attempt_speed))
+                logging.info('variance: {}'.format(variance))
 
-            if variance < 0.005:
-                logging.info('stopped at attempt {}'.format(attempt_num))
-                break
+                if variance < 0.005:
+                    logging.info('stopped at attempt {}'.format(attempt_num))
+                    break
 
         logging.info('Final mean: {}'.format(np.mean(speed_lst)))
         logging.info('Test {}/{}: {} {} {} {} {} finished'
