@@ -40,20 +40,20 @@ run_experiment() {
     local attempt="${6}"
     
     congdb-ctl add-entry 10.0.0.1/32 10.0.0.2/32 "${algo}"
-    congdb-ctl add-entry 10.0.0.2/32 10.0.0.1/32 "${algo}"
+    # congdb-ctl add-entry 10.0.0.2/32 10.0.0.1/32 "${algo}"
 
     set_qos src src0 ${rate} ${delay} ${jitter} ${loss}
     set_qos dst dst0 ${rate} ${delay} ${jitter} ${loss}
 
     ip netns exec dst iperf3 -s -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_server.json" & SRV_PID=$!
     sleep 1
-    ip netns exec src iperf3 -c 10.0.0.2 -C ${algo} -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_client.json"
+    ip netns exec src iperf3 -c 10.0.0.2 -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_client.json"
     sleep 1
     kill -s SIGTERM ${SRV_PID}
 
     congdb-ctl list-entries > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_view.txt"
     congdb-ctl del-entry 10.0.0.1/32 10.0.0.2/32
-    congdb-ctl del-entry 10.0.0.2/32 10.0.0.1/32
+    # congdb-ctl del-entry 10.0.0.2/32 10.0.0.1/32
 }
 
 
