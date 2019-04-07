@@ -96,7 +96,6 @@ def parse_res(file_path: str) -> dict:
                 [elem.strip() for elem in line[:-1].split(',')]
             quality = Quality(bw, delay, jitter, loss)
             res[quality] = alg
-    print(res)
     return res
 
 
@@ -118,6 +117,11 @@ def parse_res_per_alg(file_path: str) -> dict:
 def get_srv_out_name(alg: str, quality: Quality, attempt: int) -> str:
     assert isinstance(quality, Quality)
     bw, delay, jitter, loss = quality.to_tc_quality().to_tuple()
-    loss = int(loss) if loss == 1 else loss
     return 'net_{}_{}_{}_{}_{}_{}_server.json'\
+        .format(alg, bw, delay, jitter, loss, attempt)
+
+def get_log_name(alg: str, quality: Quality, attempt: int) -> str:
+    assert isinstance(quality, Quality)
+    bw, delay, jitter, loss = quality.to_tc_quality().to_tuple()
+    return 'net_{}_{}_{}_{}_{}_{}_log.csv'\
         .format(alg, bw, delay, jitter, loss, attempt)
