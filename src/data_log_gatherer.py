@@ -8,7 +8,7 @@ import itertools
 import logging
 import numpy as np
 import os
-from subprocess import Popen
+from subprocess import Popen, TimeoutExpired
 
 from utils import *
 from structures.config import Config
@@ -74,6 +74,12 @@ if __name__ == "__main__":
                      .format(counter, exp_num, alg, bw, delay, jitter, loss))
         speed_lst = list()
         for attempt_num in range(conf.num_attempts):
+            # check whether experiment was done before
+            log_path = os.path.join(args.savepath, 
+                                    get_log_name(alg, quality, attempt_num))
+            if os.path.exists(log_path) and os.path.getsize(log_path) > 0:
+                continue
+
             # run log converter
             p = Popen([
                 'sudo', 'python3.7', 'log_converter.py', '/var/log/kern.log',
@@ -90,19 +96,11 @@ if __name__ == "__main__":
             speed_lst.append(attempt_speed)
 
             # wait for log to stop
-            p.wait()
+            try:
+                p.wait(timeout=10)
+            except TimeoutExpired:
+                logging.info('error reading log: {}/{}: {} {} {} {} {}'
+                             .format(counter, exp_num, alg, bw, delay, jitter, loss))
 
-            # allow stop if variance is low
-            if attempt_num >= 5:
-                # calculate variance
-                variance = np.std(speed_lst) / np.mean(speed_lst)
-                logging.info('speed: {}'.format(attempt_speed))
-                logging.info('variance: {}'.format(variance))
-
-                if variance < 0.005:
-                    logging.info('stopped at attempt {}'.format(attempt_num))
-                    break
-
-        logging.info('Final mean: {}'.format(np.mean(speed_lst)))
         logging.info('Test {}/{}: {} {} {} {} {} finished'
                      .format(counter, exp_num, alg, bw, delay, jitter, loss))
