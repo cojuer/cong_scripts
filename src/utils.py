@@ -43,13 +43,13 @@ class Quality:
             (rhs.bandwidth, rhs.delay, rhs.jitter, rhs.loss)
 
     def to_tc_quality(self) -> TcQuality:
-        return TcQuality(self.bandwidth / 8, self.delay, 
+        return TcQuality(self.bandwidth, self.delay, 
                          self.delay * self.jitter / 100, self.loss)
 
     @staticmethod
     def from_tc_quality(tc_quality: TcQuality) -> 'Quality':
         return Quality(
-            bandwidth = tc_quality.bandwidth * 8,
+            bandwidth = tc_quality.bandwidth,
             delay = tc_quality.delay,
             jitter = tc_quality.jitter / tc_quality.delay * 100,
             loss = tc_quality.loss
@@ -118,6 +118,12 @@ def get_srv_out_name(alg: str, quality: Quality, attempt: int) -> str:
     assert isinstance(quality, Quality)
     bw, delay, jitter, loss = quality.to_tc_quality().to_tuple()
     return 'net_{}_{}_{}_{}_{}_{}_server.json'\
+        .format(alg, bw, delay, jitter, loss, attempt)
+
+def get_view_name(alg: str, quality: Quality, attempt: int) -> str:
+    assert isinstance(quality, Quality)
+    bw, delay, jitter, loss = quality.to_tc_quality().to_tuple()
+    return 'net_{}_{}_{}_{}_{}_{}_view.txt'\
         .format(alg, bw, delay, jitter, loss, attempt)
 
 def get_log_name(alg: str, quality: Quality, attempt: int) -> str:

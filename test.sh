@@ -27,12 +27,16 @@ set_qos() {
     local loss="${6}"
 
     ip netns exec ${nspace} tc qdisc add dev ${intf} root handle 1: tbf rate "${rate}" burst 1536b limit 1500000
-    ip netns exec ${nspace} tc qdisc add dev ${intf} parent 1:1 handle 10: netem delay "${delay}" "${jitter}" loss random "${loss}"
+    if [ "${loss}" = "0.0" ]; then
+      ip netns exec ${nspace} tc qdisc add dev ${intf} parent 1:1 handle 10: netem delay "${delay}" "${jitter}"
+    else
+      ip netns exec ${nspace} tc qdisc add dev ${intf} parent 1:1 handle 10: netem delay "${delay}" "${jitter}" loss random "${loss}"
+    fi
 }
 
 # bw, delay, jitter, loss, alg
 run_experiment() {
-    local rate="${1}mbps"
+    local rate="${1}mbit"
     local delay="${2}ms"
     local jitter="${3}ms"
     local loss="${4}"

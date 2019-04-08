@@ -72,7 +72,6 @@ if __name__ == "__main__":
         counter += 1
         logging.info('Test {}/{}: {} {} {} {} {} started'
                      .format(counter, exp_num, alg, bw, delay, jitter, loss))
-        speed_lst = list()
         for attempt_num in range(conf.num_attempts):
             # check whether experiment was done before
             log_path = os.path.join(args.savepath, 
@@ -88,12 +87,6 @@ if __name__ == "__main__":
             
             # run scripts
             run_iteration(alg, quality, attempt_num)
-
-            # read speed
-            filepath = os.path.join(args.savepath, 
-                                    get_srv_out_name(alg, quality, attempt_num))
-            attempt_speed = parse_server_out(filepath)
-            speed_lst.append(attempt_speed)
 
             # wait for log to stop
             try:
