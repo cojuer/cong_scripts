@@ -6,6 +6,7 @@ class Config:
         self._jitters = data_dict['jitters']
         self._losses = data_dict['losses']
         self._num_attempts = data_dict['num_attempts']
+        self._time = data_dict.get('time', 60)
 
     @property
     def algorithms(self):
@@ -30,3 +31,7 @@ class Config:
     @property
     def num_attempts(self):
         return self._num_attempts
+
+    @property
+    def time(self):
+        return self._time
