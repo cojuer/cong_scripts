@@ -56,7 +56,7 @@ run_experiment() {
 
     ip netns exec dst iperf3 -s -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_server.json" & SRV_PID=$!
     sleep 1
-    ip netns exec src iperf3 -c 10.0.0.2 -t ${exp_time} -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_client.json"
+    ip netns exec src iperf3 -c 10.0.0.2 -C ${algo} -t ${exp_time} -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_client.json"
     sleep 1
     kill -s SIGTERM ${SRV_PID}
 }
