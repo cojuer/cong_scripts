@@ -42,6 +42,7 @@ run_experiment() {
     local loss="${4}"
     local algo="${5}"
     local attempt="${6}"
+    local exp_time="${7}"
     
     congdb-ctl add-entry 10.0.0.1/32 10.0.0.2/32 "${algo}"
 
@@ -50,7 +51,7 @@ run_experiment() {
 
     ip netns exec dst iperf3 -s -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_server.json" & SRV_PID=$!
     sleep 1
-    ip netns exec src iperf3 --cport 45000 -c 10.0.0.2 -t 10 -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_client.json"
+    ip netns exec src iperf3 --cport 45000 -c 10.0.0.2 -t ${exp_time} -J > "Data/net_${algo}_${1}_${2}_${3}_${loss}_${attempt}_client.json"
     sleep 1
     kill -s SIGTERM ${SRV_PID}
 
@@ -71,6 +72,6 @@ usage() {
 case $1 in
   -b) build_testbed ;;
   -c) clear_testbed ;;
-  -r) run_experiment ${2} ${3} ${4} ${5} ${6} ${7} ;;
+  -r) run_experiment ${2} ${3} ${4} ${5} ${6} ${7} ${8} ;;
   *) usage ;;
 esac
