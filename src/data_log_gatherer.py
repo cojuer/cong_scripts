@@ -20,7 +20,7 @@ from structures.config import Config
 """
 
 
-def run_iteration(alg: str, quality: Quality, attempt: int) -> float:
+def run_iteration(alg: str, quality: Quality, attempt: int, attempt_time: int) -> float:
     """ Runs experiment and returns collected speed
     """
     logging.info('attempt {} started'.format(attempt))
@@ -28,9 +28,9 @@ def run_iteration(alg: str, quality: Quality, attempt: int) -> float:
     tc_quality = quality.to_tc_quality()
     # run scripts
     os.system('./test.sh -b')
-    os.system('./test.sh -r {} {} {} {} {} {}'
+    os.system('./test.sh -r {} {} {} {} {} {} {}'
               .format(tc_quality.bandwidth, tc_quality.delay, 
-                      tc_quality.jitter, tc_quality.loss, alg, attempt))
+                      tc_quality.jitter, tc_quality.loss, alg, attempt, attempt_time))
     os.system('./test.sh -c')
 
     logging.info('attempt {} finished'.format(attempt))
@@ -52,6 +52,7 @@ if __name__ == "__main__":
     # load configuration
     with open(args.conf, 'r') as fp:
         conf = Config(json.load(fp))
+    attempt_time = conf.time
 
     # create directory to save data
     if not os.path.exists(args.savepath):
@@ -86,7 +87,7 @@ if __name__ == "__main__":
             ])
             
             # run scripts
-            run_iteration(alg, quality, attempt_num)
+            run_iteration(alg, quality, attempt_num, attempt_time)
 
             # wait for log to stop
             try:
