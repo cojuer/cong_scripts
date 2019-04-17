@@ -21,7 +21,7 @@ def run_iteration(alg: str, quality: Quality, attempt: int, attempt_time: int) -
     tc_quality = quality.to_tc_quality()
     # run scripts
     os.system('./test.sh -b')
-    os.system('./test.sh -r {} {} {} {} {} {}'
+    os.system('./test.sh -r {} {} {} {} {} {} {}'
               .format(tc_quality.bandwidth, tc_quality.delay, 
                       tc_quality.jitter, tc_quality.loss, alg, attempt, attempt_time))
     os.system('./test.sh -c')
