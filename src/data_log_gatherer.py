@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
             # run log converter
             p = Popen([
-                'sudo', 'python3.7', 'log_converter.py', '/var/log/kern.log',
+                'sudo', 'python3.7', 'src/log_converter.py', '/var/log/kern.log',
                 os.path.join(args.savepath, get_log_name(alg, quality, attempt_num))
             ])
             
