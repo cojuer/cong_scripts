@@ -46,14 +46,19 @@ def main():
 
             # get statistics from kernel log
             # ignore lots of useless words which make reading log simple
-            _1, _2, log_rtt, _3, log_rtt_max, _4, log_rtt_mdev, _5, log_retr, _6, log_delv, _7, log_time = \
+            _1, _2, log_rtt, _3, log_rtt_max, _4, log_rtt_mdev, _5, log_rttvar, _6, log_srtt, _7, log_reor, _8, log_retr, _9, log_delv, _10, log_time = \
                 [word.strip() for word in line[collect_idx:].split()]
             
             log_rtt, log_retr, log_delv, log_time = \
                 int(log_rtt), int(log_retr), int(log_delv), int(log_time)
+            log_rtt_max, log_rtt_mdev, log_rttvar, log_srtt, log_reor = \
+                int(log_rtt_max), int(log_rtt_mdev), int(log_rttvar), int(log_srtt), int(log_reor)
             
             # save values to file
-            out.write('{}, {}, {}, {}, {}, {}\n'.format(log_rtt, log_rtt_max, log_rtt_mdev, log_retr, log_delv, log_time))
+            out.write('{}, {}, {}, {}, {}, {}, {}, {}, {}\n'
+                      .format(log_rtt, log_rtt_max, log_rtt_mdev, 
+                              log_rttvar, log_srtt, log_reor, 
+                              log_retr, log_delv, log_time))
 
 
 if __name__ == "__main__":
